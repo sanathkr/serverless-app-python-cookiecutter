@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: {{cookiecutter.service_name}} Service
+
+Globals:
+ # Operational Settings for each resource
+  Function:
+    AutoPublishAlias: live
+    DeploymentPreference:
+      Type: AllAtOnce
+    Tracing: PassThrough
+    Environment:
+      Variables:
+        LOGLEVEL: {
+          "Fn::If": ["EnableDebugging", "DEBUG", "INFO"]
+        }
+
+  Api:
+    EndpointConfiguration: REGIONAL
+    TracingEnabled: True
+
+    MethodSettings:
+      - DataTraceEnabled: False
+        HttpMethod: '*'
+        LoggingLevel: "INFO"
+        ResourcePath: '/*'
+        MetricsEnabled: True
+
+Outputs:
+  StackArn:
+    Value: {Ref: 'AWS::StackId'}
+
+  ApiUrl:
+    Description: URL of the Service
+    Value: {"Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/prod"}
+
+Parameters:
+  EnableDebuggingParam: {Type: String, Default: 'false', AllowedValues: ['true', 'false']}
+
+Conditions:
+
+  EnableDebugging:
+    'Fn::Equals':
+      - {Ref: EnableDebuggingParam}
+      - 'true'
+
+Resources:
+
+  LambdaFunction1:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./{{cookiecutter.package_name}}/
+      Handler: handlers.lambda1_handler
+      MemorySize: 512
+      Runtime: python3.7
+      Timeout: 30
+      Events:
+        HelloApi:
+          Type: Api
+          Properties:
+            Path: "/"
+            Method: "get"

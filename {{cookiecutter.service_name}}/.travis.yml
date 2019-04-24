@@ -1,0 +1,15 @@
+language: python
+dist: xenial
+
+python:
+  - "2.7"
+  - "3.6"
+  - "3.7"
+
+install:
+  # Install the code requirements
+  - make init
+
+script:
+  - make pr
+  - travis_wait pytest -vv tests/integration

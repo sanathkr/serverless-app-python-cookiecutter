@@ -1,0 +1,6 @@
+{
+    "service_name": "MyNewService",
+    "package_name": "my_new_service",
+    "author": "MyAuthor",
+    "repo_url": "https://github.com/someorg/somerepo"
+}
