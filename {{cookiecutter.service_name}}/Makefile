@@ -1,5 +1,6 @@
 init:
-	pip install -e '.[dev]'
+	pip install -r {{cookiecutter.package_name}}/requirements.txt -r requirements-dev.txt 
+	pip install -e .
 
 test:
 	# Run unit tests

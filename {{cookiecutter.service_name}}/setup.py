@@ -17,22 +17,6 @@ def read(*filenames, **kwargs):
     return sep.join(buf)
 
 
-def read_requirements(req='base.txt'):
-    content = read(req)
-    return [line for line in content.split(os.linesep)
-            if not line.strip().startswith('#')]
-
-
-def read_all_requirements(folder, reqname="requirements.txt"):
-    requirements = []
-
-    for root, dirs, files in os.walk(folder):
-        if reqname in files:
-            requirements += read_requirements(os.path.join(root, reqname))
-
-    return requirements
-
-
 def read_version():
     content = read(os.path.join(
         os.path.dirname(__file__), '{{cookiecutter.package_name}}', '__init__.py'))
@@ -53,10 +37,6 @@ setup(
     keywords="{{cookiecutter.service_name}} Service",
     # Support Python 2.7 and 3.6 or greater
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
-    install_requires=read_all_requirements(module_name, reqname="requirements.txt"),
-    extras_require={
-        'dev': read_requirements('requirements-dev.txt')
-    },
     include_package_data=True,
     classifiers=[
         'Development Status :: 4 - Beta',
