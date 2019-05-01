@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+        - pip install --upgrade awscli
+        - pip install --upgrade aws-sam-cli
+        - sam build
+  build:
+    commands:
+      # Use AWS CloudFormation to package your local artifacts, upload them to S3, and return a template referencing them
+        - sam package --s3-bucket $DEPLOYMENT_BUCKET --output-template packaged-template.yaml
+
+artifacts:
+  type: zip
+  files:
+      - packaged-template.yaml
