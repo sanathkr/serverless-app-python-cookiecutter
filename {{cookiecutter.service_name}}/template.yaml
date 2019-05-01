@@ -32,7 +32,7 @@ Outputs:
 
   ApiUrl:
     Description: URL of the Service
-    Value: {"Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/prod"}
+    Value: {"Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod"}
 
 Parameters:
   EnableDebuggingParam: {Type: String, Default: 'false', AllowedValues: ['true', 'false']}
