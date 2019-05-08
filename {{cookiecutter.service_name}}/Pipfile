@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+tox = "*"
+pytest = "*"
+pylint = "*"
+flake8 = "*"
+pytest-cov = "*"
+
+[packages]
+{{cookiecutter.package_name}} = {editable = true,path = "."}
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+install-lambda-functions = "pipenv install -r {{cookiecutter.package_name}}/requirements.txt"
+test = "pytest --cov {{cookiecutter.package_name}}/{{cookiecutter.package_name}} --cov-report term-missing --cov-fail-under 95 tests/unit"
+flake8 = "flake8"
+lint = "pylint"

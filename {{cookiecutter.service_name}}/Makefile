@@ -1,20 +1,20 @@
 init:
-	pip install -r {{cookiecutter.package_name}}/requirements.txt -r requirements-dev.txt 
-	pip install -e .
+	pipenv install --dev
+	pipenv run install-lambda-functions
 
 test:
 	# Run unit tests
 	# Fail if coverage falls below 95%
-	pytest --cov {{cookiecutter.package_name}}/{{cookiecutter.package_name}} --cov-report term-missing --cov-fail-under 95 tests/unit
+	pipenv run test
 
 flake:
 	# Make sure code conforms to PEP8 standards
-	flake8 {{cookiecutter.package_name}}
-	flake8 tests/unit tests/integration
+	pipenv run flake8 {{cookiecutter.package_name}}
+	pipenv run flake8 tests/unit tests/integration
 
 lint:
 	# Linter performs static analysis to catch latent bugs
-	pylint --rcfile .pylintrc {{cookiecutter.package_name}}
+	pipenv run lint --rcfile .pylintrc {{cookiecutter.package_name}}
 
 # Command to run everytime you make changes to verify everything works
 dev: flake lint test
@@ -42,4 +42,4 @@ deploy:
 
 integ-test:
 	# Integration tests don't need code coverage
-	pytest tests/integration --stack $(STACKNAME) --profile ${PROFILE} -s
+	pipenv run pytest tests/integration --stack $(STACKNAME) --profile ${PROFILE} -s
